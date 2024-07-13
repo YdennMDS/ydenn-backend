@@ -10,9 +10,8 @@ connectDB();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
-server.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+const userRoute = require("./api/routes/userRoute");
+userRoute(server);
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
