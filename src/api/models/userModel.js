@@ -19,6 +19,11 @@ let userSchema = new Schema({
     type: Date,
     required: "Le contenu est requis",
   },
+  confirmationToken: String,
+  isConfirmed: {
+    type: Boolean,
+    default: false,
+  },
   user_register_date: {
     type: Date,
     default: Date.now,

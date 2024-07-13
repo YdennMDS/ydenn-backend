@@ -47,6 +47,10 @@ Créez un fichier .env à la racine du projet et configurez les variables d'envi
 Voici un exemple de fichier .env :
 
 ```bash
+EMAIL_USER=example@email.fr
+EMAIL_PASSWORD=examplepassword
+EMAIL_HOST=examplehost
+EMAIL_SERVICE=exampleservices
 
 ```
 
