@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const { sendConfirmationEmail } = require("../services/emailService");
 
 exports.userRegister = async (req, res) => {
@@ -81,6 +82,49 @@ exports.userRegister = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(401).json({ message: "Requête invalide" });
+  }
+};
+
+exports.userLogin = async (req, res) => {
+  try {
+    const user = await User.findOne({ user_email: req.body.user_email });
+
+    if (!user) {
+      res.status(404).json({ message: "Utilisateur non trouvé" });
+      return;
+    }
+
+    if (!user.isConfirmed) {
+      res
+        .status(401)
+        .json({ message: "Veuillez d'abord vérifier votre compte" });
+      return;
+    }
+
+    const validPassword = await bcrypt.compare(
+      req.body.user_password,
+      user.user_password
+    );
+    if (!validPassword) {
+      res.status(401).json({ message: "Email ou mot de passe incorrect" });
+      return;
+    }
+
+    const userData = {
+      id: user._id,
+      email: user.user_email,
+      firstName: user.user_firstName,
+      birthDate: user.user_birth_date,
+    };
+    const token = await jwt.sign(userData, process.env.JWT_KEY, {
+      expiresIn: "24h",
+    });
+    res.status(200).json({ token });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ message: "Une erreur s'est produite lors du traitement" });
   }
 };
 
