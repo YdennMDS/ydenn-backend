@@ -20,7 +20,7 @@ exports.sendConfirmationEmail = (
     from: process.env.EMAIL_USER,
     to: user_email,
     subject: "Votre compte a bien été créé",
-    text: `Chère ${user_firstName}, nous vous souhaitons la bienvenue sur Ydenn. Veuillez cliquer sur le lien suivant pour confirmer votre compte : http://localhost:3000/user/confirm/${confirmationToken}`,
+    text: `Chère ${user_firstName}, nous vous souhaitons la bienvenue sur Ydenn. Veuillez cliquer sur le lien suivant pour confirmer votre compte : ${process.env.BASE_URL}/user/confirm/${confirmationToken}`,
   };
 
   transporter.sendMail(mailOptions, function (error, info) {
