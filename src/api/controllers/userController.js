@@ -2,7 +2,10 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-const { sendConfirmationEmail } = require("../services/emailService");
+const {
+  sendConfirmationEmail,
+  sendResetPassword,
+} = require("../services/emailService");
 
 exports.userRegister = async (req, res) => {
   try {
@@ -140,4 +143,76 @@ exports.confirmEmail = async (req, res) => {
   await user.save();
 
   res.json({ message: "Email confirmed" });
+};
+
+exports.generateResetPasswordToken = async (req, res) => {
+  try {
+    const user = await User.findOne({ user_email: req.body.user_email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+    user.resetPasswordCode = resetCode;
+    user.resetPasswordCodeExpires = Date.now() + 300000; // 5 minutes
+    await user.save();
+
+    sendResetPassword(user.user_email, resetCode);
+
+    res.json({ message: "Reset password code sent." });
+  } catch (error) {
+    res.status(500).json({ message: "Error generating reset code" });
+  }
+};
+
+exports.verifyResetPasswordCode = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordCode: req.body.code,
+      resetPasswordCodeExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Code is invalid or has expired" });
+    }
+
+    user.isCodeVerified = true;
+    await user.save();
+
+    res.json({ message: "Code is valid. Proceed with password reset." });
+  } catch (error) {
+    res.status(500).json({ message: "Error verifying reset code" });
+  }
+};
+
+exports.resetPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      resetPasswordCode: req.body.code,
+      resetPasswordCodeExpires: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ message: "Token is invalid or has expired" });
+    }
+
+    if (!user.isCodeVerified) {
+      res.status(401).json({
+        message: "Veuillez d'abord entrer le code de vérification",
+      });
+      return;
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    user.user_password = await bcrypt.hash(req.body.newPassword, salt);
+    user.resetPasswordCode = undefined;
+    user.resetPasswordCodeExpires = undefined;
+    await user.save();
+
+    res.json({ message: "Password has been reset successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error resetting password" });
+  }
 };

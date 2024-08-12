@@ -55,7 +55,6 @@ EMAIL_USER=example@email.fr
 EMAIL_PASSWORD=examplepassword
 EMAIL_HOST=examplehost
 EMAIL_SERVICE=exampleservices
-
 ```
 
 ## Démarrage
