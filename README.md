@@ -47,6 +47,10 @@ Créez un fichier .env à la racine du projet et configurez les variables d'envi
 Voici un exemple de fichier .env :
 
 ```bash
+JWT_KEY=yourjwtkey
+
+BASE_URL=yourbaseurl
+
 EMAIL_USER=example@email.fr
 EMAIL_PASSWORD=examplepassword
 EMAIL_HOST=examplehost
@@ -77,7 +81,8 @@ ydenn-backend/
 ├── src/
 │   ├── api/                 # Contient les routes, contrôleurs, modèles et middleware pour l'API
 │   ├── index.js             # Configuration et démarrage de l'application Express
-│   └── package.json         # Dépendances npm et scripts
+│   └── package.json         # Dépendances npm et script
+│
 ├── .env.sample              # Exemple de fichier de configuration des variables d'environnement
 ├── .gitignore               # Fichiers et dossiers à ignorer par Git
 ├── compose.dev.yml          # Configuration Docker pour l'environnement de développement
