@@ -40,6 +40,11 @@ let userSchema = new Schema({
       ref: "Theme",
     },
   ],
+  userAvatar: {
+    type: Schema.Types.ObjectId,
+    ref: "Avatar",
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
