@@ -21,4 +21,6 @@ module.exports = (server) => {
     auth,
     userController.updateFavoritesThemes
   );
+
+  server.post("/user/update-avatar", auth, userController.updateAvatar);
 };

@@ -18,6 +18,9 @@ userRoute(server);
 const themeRoute = require("./api/routes/themeRoute");
 themeRoute(server);
 
+const avatarRoute = require("./api/routes/avatarRoute");
+avatarRoute(server);
+
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });

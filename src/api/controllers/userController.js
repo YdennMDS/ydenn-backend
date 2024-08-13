@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const Theme = require("../models/themeModel");
+const Avatar = require("../models/avatarModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -250,5 +251,43 @@ exports.updateFavoritesThemes = async (req, res) => {
     res
       .status(500)
       .json({ error: "Erreur lors de la mise à jour des thématiques" });
+  }
+};
+
+exports.updateAvatar = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { avatarId } = req.body; // Utilisation de l'ID de l'avatar
+
+    if (!avatarId) {
+      return res.status(400).json({ error: "ID de l'avatar manquant" });
+    }
+
+    // Vérifie que l'avatar existe
+    const avatar = await Avatar.findById(avatarId);
+    if (!avatar) {
+      return res.status(400).json({ error: "Avatar non trouvé" });
+    }
+
+    // Met à jour l'utilisateur avec l'ID de l'avatar
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { userAvatar: avatarId },
+      { new: true }
+    ).populate("userAvatar");
+
+    if (!user) {
+      return res.status(404).json({ error: "Utilisateur non trouvé" });
+    }
+
+    res.json({
+      message: "Avatar mis à jour avec succès",
+      userAvatar: user.userAvatar,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la mise à jour de l'avatar" });
+    console.error(error);
   }
 };
