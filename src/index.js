@@ -15,6 +15,9 @@ server.use(express.urlencoded({ extended: true }));
 const userRoute = require("./api/routes/userRoute");
 userRoute(server);
 
+const themeRoute = require("./api/routes/themeRoute");
+themeRoute(server);
+
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
