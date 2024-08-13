@@ -34,6 +34,12 @@ let userSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  userFavoritesThemes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Theme",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

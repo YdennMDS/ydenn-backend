@@ -1,5 +1,6 @@
 module.exports = (server) => {
   const userController = require("../controllers/userController");
+  const auth = require("../middlewares/authMiddleware");
 
   server.post("/user/register", userController.userRegister);
   server.post("/user/login", userController.userLogin);
@@ -14,4 +15,10 @@ module.exports = (server) => {
     userController.verifyResetPasswordCode
   );
   server.post("/user/reset-password", userController.resetPassword);
+
+  server.post(
+    "/user/favorites-themes",
+    auth,
+    userController.updateFavoritesThemes
+  );
 };

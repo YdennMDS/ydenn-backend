@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Theme = require("../models/themeModel");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -214,5 +215,40 @@ exports.resetPassword = async (req, res) => {
     res.json({ message: "Password has been reset successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error resetting password" });
+  }
+};
+
+exports.updateFavoritesThemes = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const themeIds = req.body.themes;
+
+    if (!themeIds || themeIds.length === 0) {
+      return res.status(400).json({ error: "Aucun thème sélectionné" });
+    }
+
+    // Vérifie que les thèmes existent
+    const themes = await Theme.find({ _id: { $in: themeIds } });
+
+    if (themes.length !== themeIds.length) {
+      return res
+        .status(400)
+        .json({ error: "Certains thèmes sélectionnés n'existent pas" });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { userFavoritesThemes: themeIds },
+      { new: true }
+    ).populate("userFavoritesThemes");
+
+    res.json({
+      message: "Thématiques mises à jour avec succès",
+      themes: user.userFavoritesThemes,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la mise à jour des thématiques" });
   }
 };
