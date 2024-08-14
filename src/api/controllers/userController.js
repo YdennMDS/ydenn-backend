@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const Theme = require("../models/themeModel");
 const Avatar = require("../models/avatarModel");
+const generateUsername = require("../utils/generateUsername");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
@@ -289,5 +290,39 @@ exports.updateAvatar = async (req, res) => {
       .status(500)
       .json({ error: "Erreur lors de la mise à jour de l'avatar" });
     console.error(error);
+  }
+};
+
+exports.generateUsername = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+    const avatar = await Avatar.findById(user.userAvatar);
+
+    if (!user || !avatar) {
+      return res
+        .status(400)
+        .json({ error: "Utilisateur ou avatar non trouvé" });
+    }
+
+    // Génération du nom d'utilisateur basé sur le prénom et l'avatar
+    const username = await generateUsername(
+      user.user_firstName,
+      avatar.avatar_name,
+      user.user_birth_date
+    );
+
+    user.username = username;
+    await user.save();
+
+    res.json({
+      message: "Nom d'utilisateur généré avec succès",
+      username: user.username,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la génération du nom d'utilisateur" });
+    console.log(error);
   }
 };
