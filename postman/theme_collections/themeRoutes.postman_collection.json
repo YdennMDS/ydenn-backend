@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "33e8959f-2209-495f-a14f-328091e9a408",
+		"name": "themeRoutes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30618698"
+	},
+	"item": [
+		{
+			"name": "createTheme",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "theme_name",
+							"value": "Histoire",
+							"type": "text"
+						},
+						{
+							"key": "theme_description",
+							"value": "La catégorie histoire proposera des thématiques autour de fait historiques",
+							"type": "text"
+						},
+						{
+							"key": "theme_image",
+							"value": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Pierre-Antoine_Demachy_%281723_%E2%80%93_1807%29%3B_Une_ex%C3%A9cution_capitale%2C_place_de_la_R%C3%A9volution_%28Place_de_la_Concorde%29%2C_vers_1793._Huile_sur_papier_maroufl%C3%A9_sur_toile%2C_37_x_53%2C5_cm._Mus%C3%A9e_Carnavalet_%E2%80%93_Histoire_de_Paris.jpg",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/theme/createTheme",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"theme",
+						"createTheme"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "e45fef60-6316-4242-9a23-c937ce6ad47b",
+		"name": "avatarRoutes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30618698"
+	},
+	"item": [
+		{
+			"name": "createAvatar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "avatar_name",
+							"value": "Avatar1",
+							"type": "text"
+						},
+						{
+							"key": "avatar_image",
+							"value": "https://sm.ign.com/ign_fr/cover/a/avatar-gen/avatar-generations_bssq.jpg",
+							"type": "text"
+						},
+						{
+							"key": "avatar_description",
+							"value": "Description de l'Avatar1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/avatar/createAvatar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"avatar",
+						"createAvatar"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
