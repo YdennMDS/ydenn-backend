@@ -30,6 +30,9 @@ avatarRoute(server);
 const roomRoute = require("./api/routes/roomRoute");
 roomRoute(server);
 
+const messageRoute = require("./api/routes/messageRoute");
+messageRoute(server);
+
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
