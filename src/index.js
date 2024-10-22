@@ -27,6 +27,9 @@ themeRoute(server);
 const avatarRoute = require("./api/routes/avatarRoute");
 avatarRoute(server);
 
+const roomRoute = require("./api/routes/roomRoute");
+roomRoute(server);
+
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
