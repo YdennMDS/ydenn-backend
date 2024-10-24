@@ -8,6 +8,7 @@ Ydenn est une plateforme qui propose des espaces d’échange et de discussions 
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Documentation Swagger](#Swagger)
 - [Démarrage](#démarrage)
 - [Structure du projet](#structure-du-projet)
 
@@ -47,7 +48,25 @@ Créez un fichier .env à la racine du projet et configurez les variables d'envi
 Voici un exemple de fichier .env :
 
 ```bash
+JWT_KEY=yourjwtkey
 
+BASE_URL=yourbaseurl
+
+EMAIL_USER=example@email.fr
+EMAIL_PASSWORD=examplepassword
+EMAIL_HOST=examplehost
+EMAIL_SERVICE=exampleservices
+```
+
+## Swagger
+
+Ce projet utilise Swagger pour la documentation de l'API. Swagger permet de visualiser et tester les endpoints de manière interactive.
+
+1. Accéder à la documentation
+   Après avoir démarré l'application, la documentation Swagger sera disponible à l'URL suivante :
+
+```bash
+http://localhost:3000/docs
 ```
 
 ## Démarrage
@@ -73,7 +92,8 @@ ydenn-backend/
 ├── src/
 │   ├── api/                 # Contient les routes, contrôleurs, modèles et middleware pour l'API
 │   ├── index.js             # Configuration et démarrage de l'application Express
-│   └── package.json         # Dépendances npm et scripts
+│   └── package.json         # Dépendances npm et script
+│
 ├── .env.sample              # Exemple de fichier de configuration des variables d'environnement
 ├── .gitignore               # Fichiers et dossiers à ignorer par Git
 ├── compose.dev.yml          # Configuration Docker pour l'environnement de développement
