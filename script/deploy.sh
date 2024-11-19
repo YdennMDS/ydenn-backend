@@ -4,10 +4,10 @@
 BASE_DIR="/home/ubuntu/ydenn-backend"
 
 # Créer le dossier de logs s'il n'existe pas
-mkdir -p "/home/ubuntu/logs" || { echo "Erreur lors de la création du dossier de logs"; exit 1; }
+mkdir -p "/home/ubuntu/ydenn-logs" || { echo "Erreur lors de la création du dossier de logs"; exit 1; }
 
 # Chemin du fichier log
-LOG_FILE="/home/ubuntu/logs/deploy.log"
+LOG_FILE="/home/ubuntu/ydenn-logs/deploy.log"
 
 # Fonction pour loguer un message avec timestamp
 log_message() {

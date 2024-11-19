@@ -1,12 +1,16 @@
 name: Deploy to production server
 
 on:
-  push:
+  # push:
+  #   branches:
+  #     - main
+  pull_request:
     branches:
       - main
 
 jobs:
   deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.base_ref == 'main' && github.head_ref == 'develop')
     runs-on: ubuntu-latest
 
     steps:
@@ -19,4 +23,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to server
-        run: ssh -o StrictHostKeyChecking=no "username"@"server_adress" 'bash -s' < ./scripts/deploy.sh
+        run: ssh -o StrictHostKeyChecking=no "root"@"185.98.136.25" 'bash -s' < ./scripts/deploy.sh
