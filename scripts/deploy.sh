@@ -3,6 +3,11 @@
 # Definir le chemin de base
 BASE_DIR="/home/ubuntu/ydenn-backend"
 
+if [ ! -d "$BASE_DIR" ]; then
+  log_message "Le répertoire $BASE_DIR n'existe pas. Création du répertoire."
+  mkdir -p "$BASE_DIR" || { log_message "Erreur lors de la création du répertoire $BASE_DIR"; exit 1; }
+fi
+
 # Créer le dossier de logs s'il n'existe pas
 mkdir -p "/home/ubuntu/ydenn-logs" || { echo "Erreur lors de la création du dossier de logs"; exit 1; }
 
