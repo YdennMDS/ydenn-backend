@@ -18,15 +18,15 @@ services:
     ports:
       - "3000:3000"
 
-  alcma_nginx-1:
+  nginx-1:
     image: nginx:latest
     volumes:
       - type: bind
         source: ./nginx.conf
         target: /etc/nginx/nginx.conf
       - type: bind
-        source: ./certs/api.alcma.fr
-        target: /etc/nginx/certs/api.alcma.fr
+        source: ./certs/api.ydenn.fr
+        target: /etc/nginx/certs/api.ydenn.fr
     ports:
       - "80:80"
       - "443:443"
