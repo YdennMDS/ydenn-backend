@@ -4,11 +4,11 @@ services:
     image: node:alpine
     working_dir: /home/node/app
     env_file:
-      - ./backend/.env
+      - .env
     command: ["sh", "-c", "npm install && node app.js"]
     volumes:
       - type: bind
-        source: ./backend/src
+        source: ./src
         target: /home/node/app
       - type: bind
         source: ./certs/api.ydenn.fr
