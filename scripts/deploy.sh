@@ -29,6 +29,9 @@ sudo docker compose -f "$BASE_DIR/compose.prod.yml" down || log_message "Aucun p
 log_message "Mise à jour du code source"
 cd "$BASE_DIR" || exit
 
+# Réinitialiser les modifications locales
+git reset --hard HEAD || { log_message "Erreur lors du reset des modifications locales"; exit 1; }
+
 # Faire un pull pour mettre à jour le dépôt
 git pull origin main >> "$LOG_FILE" 2>&1 || { log_message "Erreur lors du pull du dépôt"; exit 1; }
 
