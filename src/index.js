@@ -33,8 +33,22 @@ roomRoute(server);
 const messageRoute = require("./api/routes/messageRoute");
 messageRoute(server);
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+// // local server
+// server.listen(port, hostname, () => {
+//   console.log(`Server running at http://${hostname}:${port}/`);
+// });
+
+// production server
+const sslServer = https.createServer(
+  {
+    key: fs.readFileSync("/etc/nginx/certs/api.ydenn.fr/privkey.pem"),
+    cert: fs.readFileSync("/etc/nginx/certs/api.ydenn.fr/fullchain.pem"),
+  },
+  server
+);
+
+sslServer.listen(port, hostname, () => {
+  console.log(`Secure Server running at https://${hostname}:${port}/`);
 });
 
 const swaggerOptions = {

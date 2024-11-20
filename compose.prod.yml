@@ -1,0 +1,34 @@
+services:
+  backend:
+    container_name: ydenn_backend
+    image: node:alpine
+    working_dir: /home/node/app
+    env_file:
+      - .env
+    command: ["sh", "-c", "npm install && node app.js"]
+    volumes:
+      - type: bind
+        source: ./src
+        target: /home/node/app
+      - type: bind
+        source: ./certs/api.ydenn.fr
+        target: /etc/nginx/certs/api.ydenn.fr
+    expose:
+      - 3000
+    ports:
+      - "3000:3000"
+
+  nginx-1:
+    image: nginx:latest
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf
+      - type: bind
+        source: ./certs/api.ydenn.fr
+        target: /etc/nginx/certs/api.ydenn.fr
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - backend
