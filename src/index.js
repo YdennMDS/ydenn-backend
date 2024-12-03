@@ -2,8 +2,6 @@ require("dotenv").config();
 
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const fs = require("fs");
-const https = require("https");
 
 const cors = require("cors");
 const express = require("express");
@@ -37,21 +35,8 @@ const messageRoute = require("./api/routes/messageRoute");
 messageRoute(server);
 
 // // local server
-// server.listen(port, hostname, () => {
-//   console.log(`Server running at http://${hostname}:${port}/`);
-// });
-
-// production server
-const sslServer = https.createServer(
-  {
-    key: fs.readFileSync("/etc/nginx/certs/api.ydenn.fr/privkey.pem"),
-    cert: fs.readFileSync("/etc/nginx/certs/api.ydenn.fr/fullchain.pem"),
-  },
-  server
-);
-
-sslServer.listen(port, hostname, () => {
-  console.log(`Secure Server running at https://${hostname}:${port}/`);
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
 
 const swaggerOptions = {
