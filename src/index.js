@@ -9,7 +9,8 @@ const cors = require("cors");
 const express = require("express");
 const connectDB = require("./config/db");
 
-const hostname = "127.0.0.1";
+// const hostname = "127.0.0.1";
+const hostname = "0.0.0.0";
 const port = 3000;
 const server = express();
 
