@@ -37,3 +37,31 @@ exports.createRoom = async (req, res) => {
     console.error(error);
   }
 };
+
+exports.getAllRooms = async (req, res) => {
+  try {
+    const rooms = await Room.find().populate("room_owner", "username");
+    res.status(200).json(rooms);
+  } catch (error) {
+    res.status(500).json({ error: "Erreur lors de la récupération des rooms" });
+    console.error(error);
+  }
+};
+
+exports.getRoomById = async (req, res) => {
+  try {
+    const room = await Room.findById(req.params.id).populate(
+      "room_owner",
+      "username"
+    );
+    if (!room) {
+      return res.status(404).json({ error: "Room introuvable" });
+    }
+    res.status(200).json(room);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la récupération de la room" });
+    console.error(error);
+  }
+};

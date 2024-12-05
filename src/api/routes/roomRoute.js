@@ -3,4 +3,6 @@ module.exports = (server) => {
   const auth = require("../middlewares/authMiddleware");
 
   server.post("/room/createRoom", auth, roomController.createRoom);
+  server.get("/room/getAllRooms", auth, roomController.getAllRooms);
+  server.get("/room/getRoomById/:id", auth, roomController.getRoomById);
 };
