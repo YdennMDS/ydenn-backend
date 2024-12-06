@@ -7,4 +7,16 @@ module.exports = (server) => {
     auth,
     categorieController.createCategorie
   );
+
+  server.get(
+    "/categorie/getAllCategories",
+    auth,
+    categorieController.getAllCategories
+  );
+
+  server.get(
+    "/categorie/getCategorieById/:id",
+    auth,
+    categorieController.getCategorieById
+  );
 };
