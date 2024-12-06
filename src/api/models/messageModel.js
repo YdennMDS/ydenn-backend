@@ -16,7 +16,7 @@ let messageSchema = new Schema({
     ref: "Room",
     required: true,
   },
-  createdAt: {
+  message_date: {
     type: Date,
     default: Date.now,
   },

@@ -3,4 +3,9 @@ module.exports = (server) => {
   const auth = require("../middlewares/authMiddleware");
 
   server.post("/message/createMessage", auth, messageController.createMessage);
+  server.get(
+    "/message/getMessagesByRoomId/:roomId",
+    auth,
+    messageController.getMessagesByRoomId
+  );
 };
