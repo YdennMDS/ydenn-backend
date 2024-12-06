@@ -46,6 +46,9 @@ roomRoute(server);
 const messageRoute = require("./api/routes/messageRoute");
 messageRoute(server);
 
+const categorieRoute = require("./api/routes/categorieRoute");
+categorieRoute(server);
+
 const swaggerOptions = {
   swaggerDefinition: {
     openapi: "3.0.0",
