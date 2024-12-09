@@ -14,7 +14,17 @@ let themeSchema = new Schema({
   theme_image: {
     type: String,
   },
-  createdAt: {
+  theme_rooms: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Room",
+    },
+  ],
+  theme_createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  theme_updatedAt: {
     type: Date,
     default: Date.now,
   },

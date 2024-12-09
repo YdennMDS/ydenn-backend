@@ -19,7 +19,10 @@ exports.createCategorie = async (req, res) => {
 
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await Categorie.find();
+    const categories = await Categorie.find().populate(
+      "categorie_theme",
+      "theme_name"
+    );
     res.status(200).json(categories);
   } catch (error) {
     res.status(404).json({ message: error.message });
