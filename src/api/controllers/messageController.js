@@ -49,12 +49,6 @@ exports.getMessagesByRoomId = async (req, res) => {
       })
       .populate("message_author", "username");
 
-    if (!messages || messages.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "Aucun message trouvé pour cette room." });
-    }
-
     return res.status(200).json({ messages });
   } catch (error) {
     console.error("Erreur lors de la récupération des messages:", error);
