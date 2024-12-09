@@ -121,6 +121,9 @@ exports.userLogin = async (req, res) => {
       email: user.user_email,
       firstName: user.user_firstName,
       birthDate: user.user_birth_date,
+      avatar: user.userAvatar,
+      themes: user.userFavoritesThemes,
+      username: user.username,
     };
     const token = await jwt.sign(userData, process.env.JWT_KEY, {
       expiresIn: "24h",
