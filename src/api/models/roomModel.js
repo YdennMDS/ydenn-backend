@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 let roomSchema = new Schema({
   room_categorie: {
     type: Schema.Types.ObjectId,
-    ref: "Theme",
+    ref: "Categorie",
   },
   room_thematic: {
     type: Schema.Types.ObjectId,
