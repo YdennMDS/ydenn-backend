@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 let roomSchema = new Schema({
-  // room_categorie: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Theme",
-  // },
-  // room_thematic: {
-  //   type: Schema.Types.ObjectId,
-  //   ref: "Theme",
-  // },
+  room_categorie: {
+    type: Schema.Types.ObjectId,
+    ref: "Theme",
+  },
+  room_thematic: {
+    type: Schema.Types.ObjectId,
+    ref: "Theme",
+  },
   room_duration: {
     type: Number,
     required: true,
@@ -23,19 +23,18 @@ let roomSchema = new Schema({
     enum: ["public", "private"],
     required: true,
   },
-  created_at: {
+  room_created_at: {
     type: Date,
     default: Date.now,
   },
-  updatedAt: {
+  room_updatedAt: {
     type: Date,
     default: Date.now,
   },
   room_isSponsored: {
     type: Boolean,
-    default: false, // Par défaut, une room est classique
+    default: false,
   },
-  // Ajout d'un champ sponsor dans le cas d'une room sponsorisée
   room_sponsor_name: {
     type: String,
     required: function () {
@@ -53,6 +52,11 @@ let roomSchema = new Schema({
       ref: "User",
     },
   ],
+  room_max_participants: {
+    type: Number,
+    default: 10,
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("Room", roomSchema);
