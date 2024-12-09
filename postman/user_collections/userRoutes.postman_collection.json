@@ -1,0 +1,290 @@
+{
+  "info": {
+    "_postman_id": "1c929ed7-d0aa-4ec2-87cd-21aa12f96206",
+    "name": "userRoutes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "30618698"
+  },
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_email",
+              "value": "test@test.fr",
+              "type": "text"
+            },
+            {
+              "key": "user_password",
+              "value": "testtt1",
+              "type": "text"
+            },
+            {
+              "key": "user_password_confirm",
+              "value": "testtt1",
+              "type": "text"
+            },
+            {
+              "key": "user_firstName",
+              "value": "userTest",
+              "type": "text"
+            },
+            {
+              "key": "user_birth_date",
+              "value": "27/07/2001",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/register",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "confirmRegister",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/user/confirm/:token",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "confirm", ":token"],
+          "variable": [
+            {
+              "key": "token",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_email",
+              "value": "test@test.fr",
+              "type": "text"
+            },
+            {
+              "key": "user_password",
+              "value": "testtt1",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "resetPasswordRequest",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "user_email",
+              "value": "test@test.fr",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/reset-password-request",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "reset-password-request"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "resetPassword",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "code",
+              "value": "715465",
+              "type": "text"
+            },
+            {
+              "key": "newPassword",
+              "value": "newpassword",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/reset-password",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "reset-password"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "verifyResetCode",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "code",
+              "value": "715465",
+              "type": "text"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/verify-reset-code",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "verify-reset-code"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "favoritesThemes",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWJkMmM2NDU2NzgxNGRhN2RmN2Q5OSIsImVtYWlsIjoiYW50b2luZS5sZWNvcnJlQHlhaG9vLmZyIiwiZmlyc3ROYW1lIjoiQW50b2luZSIsImJpcnRoRGF0ZSI6IjIwMDEtMDctMjdUMDA6MDA6MDAuMDAwWiIsImlhdCI6MTcyMzU2MjM2OSwiZXhwIjoxNzIzNjQ4NzY5fQ.Ja84w39A-A6ToiflpA0idOWYutbQrvP3RkCKrDYCzdc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "themes",
+              "value": "66bb74c323ee73dc70563ef5",
+              "type": "text"
+            }
+          ],
+          "options": {
+            "urlencoded": {
+              "language": "text"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/favorites-themes",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "favorites-themes"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateAvatar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWJkMmM2NDU2NzgxNGRhN2RmN2Q5OSIsImVtYWlsIjoiYW50b2luZS5sZWNvcnJlQHlhaG9vLmZyIiwiZmlyc3ROYW1lIjoiQW50b2luZSIsImJpcnRoRGF0ZSI6IjIwMDEtMDctMjdUMDA6MDA6MDAuMDAwWiIsImlhdCI6MTcyMzU2MjM2OSwiZXhwIjoxNzIzNjQ4NzY5fQ.Ja84w39A-A6ToiflpA0idOWYutbQrvP3RkCKrDYCzdc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"avatarId\": \"66bb83eec4f7073ad91ca34d\"\r\n}\r\n",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/update-avatar",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "update-avatar"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "generateUsername",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2OWJkMmM2NDU2NzgxNGRhN2RmN2Q5OSIsImVtYWlsIjoiYW50b2luZS5sZWNvcnJlQHlhaG9vLmZyIiwiZmlyc3ROYW1lIjoiQW50b2luZSIsImJpcnRoRGF0ZSI6IjIwMDEtMDctMjdUMDA6MDA6MDAuMDAwWiIsImlhdCI6MTcyMzYyNTk3NiwiZXhwIjoxNzIzNzEyMzc2fQ.uKKXijVSR0wulSLGeINPR6HIqvluoGKFBfULgSr-Ofk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        },
+        "url": {
+          "raw": "http://localhost:3000/user/generate-username",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["user", "generate-username"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

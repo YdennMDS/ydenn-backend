@@ -8,6 +8,7 @@ Ydenn est une plateforme qui propose des espaces d’échange et de discussions 
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Configuration](#configuration)
+- [Documentation Swagger](#Swagger)
 - [Démarrage](#démarrage)
 - [Structure du projet](#structure-du-projet)
 
@@ -55,6 +56,17 @@ EMAIL_USER=example@email.fr
 EMAIL_PASSWORD=examplepassword
 EMAIL_HOST=examplehost
 EMAIL_SERVICE=exampleservices
+```
+
+## Swagger
+
+Ce projet utilise Swagger pour la documentation de l'API. Swagger permet de visualiser et tester les endpoints de manière interactive.
+
+1. Accéder à la documentation
+   Après avoir démarré l'application, la documentation Swagger sera disponible à l'URL suivante :
+
+```bash
+http://localhost:3000/docs
 ```
 
 ## Démarrage
