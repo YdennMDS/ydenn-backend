@@ -72,4 +72,6 @@ module.exports = (server) => {
    *                   example: "Erreur serveur"
    */
   server.post("/theme/createTheme", themeController.createTheme);
+
+  server.get("/theme/getAllThemes", themeController.getAllThemes);
 };

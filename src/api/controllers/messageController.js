@@ -7,7 +7,6 @@ exports.createMessage = async (req, res) => {
     const { message_content, message_room } = req.body;
 
     const room = await Room.findById(message_room);
-    // const room = "6717a92a6fc6f10596a798ed";
 
     if (!room) {
       return res.status(404).json({ error: "Room introuvable" });
@@ -24,7 +23,6 @@ exports.createMessage = async (req, res) => {
       message_content: cleanMessageContent,
       message_author: req.user.id,
       message_room,
-      // message_room: "6717a92a6fc6f10596a798ed",
     });
 
     await newMessage.save();
@@ -34,5 +32,26 @@ exports.createMessage = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "Erreur lors de la création du message" });
     console.error(error);
+  }
+};
+
+exports.getMessagesByRoomId = async (req, res) => {
+  const { roomId } = req.params;
+
+  if (!roomId) {
+    return res.status(400).json({ message: "L'ID de la room est requis." });
+  }
+
+  try {
+    const messages = await Message.find({ message_room: roomId })
+      .sort({
+        createdAt: 1,
+      })
+      .populate("message_author", "username");
+
+    return res.status(200).json({ messages });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des messages:", error);
+    return res.status(500).json({ message: "Erreur interne du serveur." });
   }
 };

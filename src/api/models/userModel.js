@@ -7,6 +7,10 @@ let userSchema = new Schema({
     required: true,
     unique: true,
   },
+  username: {
+    type: String,
+    unique: true,
+  },
   user_password: {
     type: String,
     required: "Le contenu est requis",

@@ -1,33 +1,34 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let themeSchema = new Schema({
-  theme_name: {
+let categorieSchema = new Schema({
+  categorie_name: {
     type: String,
     required: true,
     unique: true,
   },
-  theme_description: {
+  categorie_description: {
     type: String,
     required: true,
   },
-  theme_image: {
-    type: String,
-  },
-  theme_rooms: [
+  categorie_theme: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Room",
+      ref: "Theme",
     },
   ],
-  theme_createdAt: {
+  categorie_image: {
+    type: String,
+    required: true,
+  },
+  categorie_createdAt: {
     type: Date,
     default: Date.now,
   },
-  theme_updatedAt: {
+  categorie_updatedAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model("Theme", themeSchema);
+module.exports = mongoose.model("Categorie", categorieSchema);

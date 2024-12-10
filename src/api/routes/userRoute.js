@@ -275,4 +275,6 @@ module.exports = (server) => {
    *         description: Erreur serveur
    */
   server.post("/user/update-avatar", auth, userController.updateAvatar);
+
+  server.post("/user/generate-username", auth, userController.generateUsername);
 };
