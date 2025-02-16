@@ -15,4 +15,5 @@ module.exports = (server) => {
     auth,
     roomController.unregisterFromRoom
   );
+  server.get("/room/:roomId/isUserInRoom", auth, roomController.isUserInRoom);
 };

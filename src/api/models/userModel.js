@@ -49,6 +49,10 @@ let userSchema = new Schema({
     ref: "Avatar",
     default: null,
   },
+  expoPushToken: {
+    type: String,
+    default: null,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);
