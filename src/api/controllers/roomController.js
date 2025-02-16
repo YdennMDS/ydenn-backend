@@ -84,10 +84,21 @@ exports.getAllRooms = async (req, res) => {
 exports.getRoomById = async (req, res) => {
   try {
     const room = await Room.findById(req.params.id)
-      .populate("room_owner", "username")
+      .populate({
+        path: "room_owner", // Peupler le champ `room_owner`
+        select: "username", // Sélectionner uniquement `username`
+        populate: {
+          path: "userAvatar", // Peupler le champ `userAvatar` de `room_owner`
+          select: "avatar_image", // Sélectionner uniquement `avatar_image` dans `userAvatar`
+        },
+      })
+      .populate({
+        path: "room_participants",
+        select: "username",
+        populate: { path: "userAvatar", select: "avatar_image" },
+      })
       .populate("room_categorie", "categorie_name")
-      .populate("room_thematic", "theme_name")
-      .populate("room_participants", "username");
+      .populate("room_thematic", "theme_name");
     if (!room) {
       return res.status(404).json({ error: "Room introuvable" });
     }
@@ -164,6 +175,26 @@ exports.unregisterFromRoom = async (req, res) => {
     res
       .status(500)
       .json({ error: "Erreur lors de la désinscription de la room." });
+    console.error(error);
+  }
+};
+
+exports.isUserInRoom = async (req, res) => {
+  try {
+    const { roomId } = req.params;
+    const userId = req.user.id; // Utilise l'id de l'utilisateur authentifié
+
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({ error: "Room introuvable." });
+    }
+
+    const isUserInRoom = room.room_participants.includes(userId);
+    res.status(200).json({ isUserInRoom });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la vérification de l'inscription." });
     console.error(error);
   }
 };

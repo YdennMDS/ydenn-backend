@@ -23,4 +23,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy to server
-        run: ssh -o StrictHostKeyChecking=no "root"@"185.98.136.25" 'bash -s' < ./scripts/deploy.sh
+        run: ssh -o StrictHostKeyChecking=no "root"@"31.207.33.123" 'bash -s' < ./scripts/deploy.sh
