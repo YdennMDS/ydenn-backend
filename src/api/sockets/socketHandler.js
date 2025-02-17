@@ -19,7 +19,7 @@ module.exports = (io) => {
         message_author: { username },
         message_content: message,
         message_room: roomId,
-        sentAt: new Date().toISOString(),
+        message_date: new Date().toISOString(),
       };
 
       io.to(roomId).emit("receiveMessage", newMessage);
