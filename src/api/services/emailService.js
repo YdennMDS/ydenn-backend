@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-let transporter = nodemailer.createTransport({
+const transporter = nodemailer.createTransport({
   service: process.env.EMAIL_SERVICE,
   host: process.env.EMAIL_HOST,
   port: 587,
@@ -16,19 +16,19 @@ exports.sendConfirmationEmail = (
   user_firstName,
   confirmationToken
 ) => {
-  let mailOptions = {
+  const mailOptions = {
     from: process.env.EMAIL_USER,
     to: user_email,
     subject: "Votre compte a bien été créé",
     text: `Chère ${user_firstName}, nous vous souhaitons la bienvenue sur Ydenn. Veuillez cliquer sur le lien suivant pour confirmer votre compte : ${process.env.BASE_URL}/user/confirm/${confirmationToken}`,
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log("* Error sending email *");
       console.log(error);
     } else {
-      console.log("Email sent: " + info.response);
+      console.log(`Email sent: ${info.response}`);
     }
   });
 };
@@ -37,7 +37,7 @@ exports.sendResetPassword = (user_email, resetPasswordCode) => {
   const resetPasswordCodeSplit = resetPasswordCode;
   const digits = resetPasswordCodeSplit.toString().split("");
 
-  let mailOptions = {
+  const mailOptions = {
     from: process.env.EMAIL_USER,
     to: user_email,
     subject: "Réinitialisation de votre mot de passe",
@@ -113,12 +113,12 @@ exports.sendResetPassword = (user_email, resetPasswordCode) => {
         </html>`,
   };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+  transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log("* Error sending email *");
       console.log(error);
     } else {
-      console.log("Email sent: " + info.response);
+      console.log(`Email sent: ${info.response}`);
     }
   });
 };

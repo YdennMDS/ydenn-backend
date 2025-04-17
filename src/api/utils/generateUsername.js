@@ -7,9 +7,9 @@ async function generateUsername(firstName, avatarName, birthDate) {
 
   const [year, month, day] = birthDate.split("-");
 
-  console.log("Year: " + (year || "N/A"));
-  console.log("Month: " + (month || "N/A"));
-  console.log("Day: " + (day || "N/A"));
+  console.log(`Year: ${year || "N/A"}`);
+  console.log(`Month: ${month || "N/A"}`);
+  console.log(`Day: ${day || "N/A"}`);
 
   // Normalisation des noms pour éviter les espaces ou caractères spéciaux
   const baseUsername = `${firstName.toLowerCase()}_${avatarName

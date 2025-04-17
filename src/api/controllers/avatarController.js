@@ -25,3 +25,12 @@ exports.createAvatar = async (req, res) => {
     console.error(error);
   }
 };
+
+exports.getAllAvatar = async (req, res) => {
+  try {
+    const avatars = await Avatar.find();
+    res.status(200).json(avatars);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};

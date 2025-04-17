@@ -5,11 +5,10 @@ const swaggerUi = require("swagger-ui-express");
 
 const cors = require("cors");
 const connectDB = require("./config/db");
-const http = require("http"); // Import du module HTTP
-const { Server } = require("socket.io"); // Import de Socket.IO
+const http = require("node:http");
+const { Server } = require("socket.io");
 const express = require("express");
 
-// const hostname = "127.0.0.1";
 const hostname = "0.0.0.0";
 const port = 3000;
 const server = express();

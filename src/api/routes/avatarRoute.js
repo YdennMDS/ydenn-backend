@@ -72,4 +72,5 @@ module.exports = (server) => {
    *                   example: "Erreur lors de la création de l'avatar"
    */
   server.post("/avatar/createAvatar", avatarController.createAvatar);
+  server.get("/avatar/getAllAvatar", avatarController.getAllAvatar);
 };

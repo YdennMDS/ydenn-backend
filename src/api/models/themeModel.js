@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let themeSchema = new Schema({
+const themeSchema = new Schema({
   theme_name: {
     type: String,
     required: true,
