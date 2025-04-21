@@ -16,4 +16,12 @@ module.exports = (server) => {
     roomController.unregisterFromRoom
   );
   server.get("/room/:roomId/isUserInRoom", auth, roomController.isUserInRoom);
+  server.post("/rooms/:roomId/start", auth, roomController.startRoom);
+
+  // Nouvelle route pour mettre à jour la date de démarrage
+  server.patch(
+    "/rooms/:roomId/start-time",
+    auth,
+    roomController.updateRoomStartTime
+  );
 };

@@ -277,4 +277,6 @@ module.exports = (server) => {
   server.post("/user/update-avatar", auth, userController.updateAvatar);
 
   server.post("/user/generate-username", auth, userController.generateUsername);
+
+  server.get("/users/search", auth, userController.searchUsers);
 };

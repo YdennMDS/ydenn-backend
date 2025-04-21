@@ -8,6 +8,7 @@ const connectDB = require("./config/db");
 const http = require("node:http");
 const { Server } = require("socket.io");
 const express = require("express");
+const schedulerService = require("./api/services/schedulerService");
 
 const hostname = "0.0.0.0";
 const port = 3000;
@@ -24,9 +25,18 @@ const io = new Server(httpServer, {
 });
 
 const socketHandler = require("./api/sockets/socketHandler");
-socketHandler(io);
+const notificationController = require("./api/controllers/notificationController");
 
-connectDB();
+// Initialiser le gestionnaire de socket et récupérer l'instance
+const socketInstance = socketHandler(io);
+
+// Configurer le contrôleur de notification avec l'instance socket
+notificationController.setSocketInstance(socketInstance);
+
+connectDB().then(() => {
+  // Planifier le démarrage de toutes les rooms futures
+  schedulerService.scheduleAllFutureRooms();
+});
 
 server.use(cors());
 server.use(express.json());
@@ -49,6 +59,12 @@ messageRoute(server);
 
 const categorieRoute = require("./api/routes/categorieRoute");
 categorieRoute(server);
+
+const friendRoute = require("./api/routes/friendRoute");
+friendRoute(server);
+
+const notificationRoute = require("./api/routes/notificationRoute");
+notificationRoute(server);
 
 const swaggerOptions = {
   swaggerDefinition: {

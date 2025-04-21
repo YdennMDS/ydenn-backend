@@ -10,6 +10,7 @@ const {
   sendConfirmationEmail,
   sendResetPassword,
 } = require("../services/emailService");
+const Friend = require("../models/friendModel");
 
 exports.userRegister = async (req, res) => {
   try {
@@ -330,5 +331,40 @@ exports.generateUsername = async (req, res) => {
       .status(500)
       .json({ error: "Erreur lors de la génération du nom d'utilisateur" });
     console.log(error);
+  }
+};
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+    const currentUserId = req.user.id;
+
+    if (!query || query.trim() === "") {
+      return res.status(400).json({ error: "Terme de recherche requis" });
+    }
+
+    // Recherche des utilisateurs dont le nom d'utilisateur contient la requête
+    // Exclut l'utilisateur actuel des résultats
+    const users = await User.find({
+      username: { $regex: query, $options: "i" },
+      _id: { $ne: currentUserId }, // Exclure l'utilisateur actuel
+    })
+      .select("username userAvatar") // Sélectionner uniquement les champs nécessaires
+      .populate("userAvatar", "avatar_image avatar_name")
+      .limit(10); // Limiter le nombre de résultats
+
+    // Formater les résultats
+    const formattedUsers = users.map((user) => ({
+      _id: user._id,
+      username: user.username,
+      avatar: user.userAvatar,
+    }));
+
+    res.status(200).json(formattedUsers);
+  } catch (error) {
+    console.error("Erreur lors de la recherche d'utilisateurs:", error);
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la recherche d'utilisateurs" });
   }
 };
