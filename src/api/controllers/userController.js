@@ -1,14 +1,16 @@
 const User = require("../models/userModel");
 const Theme = require("../models/themeModel");
+const Categorie = require("../models/categorieModel");
 const Avatar = require("../models/avatarModel");
 const generateUsername = require("../utils/generateUsername");
 const bcrypt = require("bcrypt");
-const crypto = require("crypto");
+const crypto = require("node:crypto");
 const jwt = require("jsonwebtoken");
 const {
   sendConfirmationEmail,
   sendResetPassword,
 } = require("../services/emailService");
+const Friend = require("../models/friendModel");
 
 exports.userRegister = async (req, res) => {
   try {
@@ -55,9 +57,9 @@ exports.userRegister = async (req, res) => {
 
     const parts = userInputDate.split("/");
 
-    const day = parseInt(parts[0], 10);
-    const month = parseInt(parts[1], 10) - 1;
-    const year = parseInt(parts[2], 10);
+    const day = Number.parseInt(parts[0], 10);
+    const month = Number.parseInt(parts[1], 10) - 1;
+    const year = Number.parseInt(parts[2], 10);
 
     const parsedDate = new Date(Date.UTC(year, month, day));
 
@@ -93,7 +95,10 @@ exports.userRegister = async (req, res) => {
 
 exports.userLogin = async (req, res) => {
   try {
-    const user = await User.findOne({ user_email: req.body.user_email });
+    // Trouver l'utilisateur et peupler le champ userAvatar pour obtenir tous les détails
+    const user = await User.findOne({
+      user_email: req.body.user_email,
+    }).populate("userAvatar");
 
     if (!user) {
       res.status(404).json({ message: "Utilisateur non trouvé" });
@@ -121,8 +126,8 @@ exports.userLogin = async (req, res) => {
       email: user.user_email,
       firstName: user.user_firstName,
       birthDate: user.user_birth_date,
-      avatar: user.userAvatar,
-      themes: user.userFavoritesThemes,
+      avatar: user.userAvatar, // Maintenant contient toutes les informations de l'avatar
+      themes: user.userFavoritesThemes, // Déjà peuplé avec les thèmes favoris
       username: user.username,
     };
     const token = await jwt.sign(userData, process.env.JWT_KEY, {
@@ -226,16 +231,15 @@ exports.resetPassword = async (req, res) => {
 exports.updateFavoritesThemes = async (req, res) => {
   try {
     const userId = req.user.id;
-    const themeIds = req.body.themes;
+    const categoryIds = req.body.themes;
 
-    if (!themeIds || themeIds.length === 0) {
-      return res.status(400).json({ error: "Aucun thème sélectionné" });
+    if (!categoryIds || categoryIds.length === 0) {
+      return res.status(400).json({ error: "Aucune catégorie sélectionnée" });
     }
 
-    // Vérifie que les thèmes existent
-    const themes = await Theme.find({ _id: { $in: themeIds } });
+    const categories = await Categorie.find({ _id: { $in: categoryIds } });
 
-    if (themes.length !== themeIds.length) {
+    if (categories.length !== categoryIds.length) {
       return res
         .status(400)
         .json({ error: "Certains thèmes sélectionnés n'existent pas" });
@@ -243,18 +247,18 @@ exports.updateFavoritesThemes = async (req, res) => {
 
     const user = await User.findByIdAndUpdate(
       userId,
-      { userFavoritesThemes: themeIds },
+      { userFavoritesThemes: categoryIds },
       { new: true }
     ).populate("userFavoritesThemes");
 
     res.json({
-      message: "Thématiques mises à jour avec succès",
+      message: "Categorieatégories mises à jour avec succès",
       themes: user.userFavoritesThemes,
     });
   } catch (error) {
     res
       .status(500)
-      .json({ error: "Erreur lors de la mise à jour des thématiques" });
+      .json({ error: "Erreur lors de la mise à jour des catégories" });
   }
 };
 
@@ -327,5 +331,40 @@ exports.generateUsername = async (req, res) => {
       .status(500)
       .json({ error: "Erreur lors de la génération du nom d'utilisateur" });
     console.log(error);
+  }
+};
+
+exports.searchUsers = async (req, res) => {
+  try {
+    const { query } = req.query;
+    const currentUserId = req.user.id;
+
+    if (!query || query.trim() === "") {
+      return res.status(400).json({ error: "Terme de recherche requis" });
+    }
+
+    // Recherche des utilisateurs dont le nom d'utilisateur contient la requête
+    // Exclut l'utilisateur actuel des résultats
+    const users = await User.find({
+      username: { $regex: query, $options: "i" },
+      _id: { $ne: currentUserId }, // Exclure l'utilisateur actuel
+    })
+      .select("username userAvatar") // Sélectionner uniquement les champs nécessaires
+      .populate("userAvatar", "avatar_image avatar_name")
+      .limit(10); // Limiter le nombre de résultats
+
+    // Formater les résultats
+    const formattedUsers = users.map((user) => ({
+      _id: user._id,
+      username: user.username,
+      avatar: user.userAvatar,
+    }));
+
+    res.status(200).json(formattedUsers);
+  } catch (error) {
+    console.error("Erreur lors de la recherche d'utilisateurs:", error);
+    res
+      .status(500)
+      .json({ error: "Erreur lors de la recherche d'utilisateurs" });
   }
 };

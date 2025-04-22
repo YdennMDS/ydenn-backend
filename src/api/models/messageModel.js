@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-let messageSchema = new Schema({
+const messageSchema = new Schema({
   message_content: {
     type: String,
     required: true,
+    trim: true,
   },
   message_author: {
     type: Schema.Types.ObjectId,
