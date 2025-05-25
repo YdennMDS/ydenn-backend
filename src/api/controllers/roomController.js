@@ -69,12 +69,79 @@ exports.createRoom = async (req, res) => {
 
 exports.getAllRooms = async (req, res) => {
   try {
-    const rooms = await Room.find()
+    // Paramètres de pagination et filtrage
+    const page = Number.parseInt(req.query.page, 10) || 1;
+    const limit = Number.parseInt(req.query.limit, 10) || 10;
+    const skip = (page - 1) * limit;
+
+    // Filtres possibles
+    const filter = {};
+
+    // Filtrer par type de salle (public/private)
+    if (req.query.type && ["public", "private"].includes(req.query.type)) {
+      filter.room_type = req.query.type;
+    }
+
+    // Filtrer par catégorie
+    if (req.query.categorie) {
+      filter.room_categorie = req.query.categorie;
+    }
+
+    // Filtrer par thématique
+    if (req.query.thematic) {
+      filter.room_thematic = req.query.thematic;
+    }
+
+    // Filtrer les salles sponsorisées
+    if (req.query.sponsored === "true") {
+      filter.room_isSponsored = true;
+    } else if (req.query.sponsored === "false") {
+      filter.room_isSponsored = false;
+    }
+
+    // Filtrer par date de début (après une certaine date)
+    if (req.query.startAfter) {
+      filter.room_start_time = { $gte: new Date(req.query.startAfter) };
+    }
+
+    // Filtrer par disponibilité (salles qui ne sont pas pleines)
+    if (req.query.available === "true") {
+      // $expr permet d'utiliser des opérateurs d'agrégation dans une requête find
+      filter.$expr = {
+        $lt: [{ $size: "$room_participants" }, "$room_max_participants"],
+      };
+    }
+
+    // Exécuter la requête avec pagination
+    const rooms = await Room.find(filter)
       .populate("room_owner", "username")
       .populate("room_categorie", "categorie_name")
       .populate("room_thematic", "theme_name")
-      .populate("room_participants", "username");
-    res.status(200).json(rooms);
+      .populate("room_participants", "username")
+      .sort({ room_start_time: 1 }) // Trier par date de démarrage
+      .skip(skip)
+      .limit(limit);
+
+    // Obtenir le nombre total de salles pour la pagination
+    const total = await Room.countDocuments(filter);
+
+    // Calculer les métadonnées de pagination
+    const totalPages = Math.ceil(total / limit);
+    const hasNext = page < totalPages;
+    const hasPrev = page > 1;
+
+    // Renvoyer les salles avec les métadonnées de pagination
+    res.status(200).json({
+      rooms,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNext,
+        hasPrev,
+      },
+    });
   } catch (error) {
     res.status(500).json({ error: "Erreur lors de la récupération des rooms" });
     console.error(error);

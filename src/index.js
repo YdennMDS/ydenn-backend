@@ -5,17 +5,17 @@ const swaggerUi = require("swagger-ui-express");
 
 const cors = require("cors");
 const connectDB = require("./config/db");
-const http = require("http"); // Import du module HTTP
+const http = require("node:http"); // Import du module HTTP
 const { Server } = require("socket.io"); // Import de Socket.IO
 const express = require("express");
 
 // const hostname = "127.0.0.1";
 const hostname = "0.0.0.0";
 const port = 3000;
-const server = express();
+const app = express();
 
 // Créer un serveur HTTP pour permettre à Socket.IO de fonctionner
-const httpServer = http.createServer(server);
+const httpServer = http.createServer(app);
 // Configurer Socket.IO avec le serveur HTTP
 const io = new Server(httpServer, {
   cors: {
@@ -27,29 +27,32 @@ const io = new Server(httpServer, {
 const socketHandler = require("./api/sockets/socketHandler");
 socketHandler(io);
 
-connectDB();
+// Ne connecte pas à la base de données si on est en mode test (géré par mongodb-memory-server)
+if (process.env.NODE_ENV !== "test") {
+  connectDB();
+}
 
-server.use(cors());
-server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const userRoute = require("./api/routes/userRoute");
-userRoute(server);
+userRoute(app);
 
 const themeRoute = require("./api/routes/themeRoute");
-themeRoute(server);
+themeRoute(app);
 
 const avatarRoute = require("./api/routes/avatarRoute");
-avatarRoute(server);
+avatarRoute(app);
 
 const roomRoute = require("./api/routes/roomRoute");
-roomRoute(server);
+roomRoute(app);
 
 const messageRoute = require("./api/routes/messageRoute");
-messageRoute(server);
+messageRoute(app);
 
 const categorieRoute = require("./api/routes/categorieRoute");
-categorieRoute(server);
+categorieRoute(app);
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -83,14 +86,14 @@ const swaggerOptions = {
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-server.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-// // // local server
-// server.listen(port, hostname, () => {
-//   console.log(`Server running at http://${hostname}:${port}/`);
-// });
+// Ne démarre le serveur que si nous ne sommes pas en mode test
+if (process.env.NODE_ENV !== "test") {
+  httpServer.listen(port, hostname, () => {
+    console.log(`Server running at http://${hostname}:${port}/`);
+  });
+}
 
-// // local server
-httpServer.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+// Exporter pour les tests
+module.exports = { app, server: httpServer };
